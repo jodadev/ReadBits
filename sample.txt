@@ -1,0 +1,13 @@
+Hello, this is a test document to use in conjunction with the ReadBits Program. 
+
+Simply open the a.exe(executable file) and when prompted to enter a file name, type this one in "sample".
+
+The program will return its binary version of all this text to the console. You may erase the contents in here and write your own
+or create your own .txt file and name it what you like. Just make sure the file uses the .txt extension and that the file exists in the 
+same directory as the a.exe(executable file).
+
+You may explore the source code to study and even download the zip file to play around with it. This repo will not accept any contributions, sorry.
+
+Enjoy!
+
+	JODA
