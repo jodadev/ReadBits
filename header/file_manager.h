@@ -8,4 +8,5 @@ class FileManager
 {
 public:
     static std::string Read(std::string);
+    static void Write(std::string, std::string);
 };

@@ -1,0 +1,5 @@
+Title: ReadBits
+Version: v1.0.1
+Author: JODA Dev
+License Type: MIT
+Year Published: 2023

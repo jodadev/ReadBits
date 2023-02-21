@@ -1,4 +1,4 @@
-// Written by JODA Dev
+// Copyright JODA Dev. All Rights Reserved. 
 
 #include "../header/binary_encoding.h"
 
@@ -11,6 +11,7 @@ std::string BinaryEncoding::get_binary(int decimal)
         Log::logError("decimal value under 0 is not allowed!");
         return "";
     }
+    
     std::string binaryStr = "";
     // loop through 8 bits
     for(int i = 7; i > -1; i--)

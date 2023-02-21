@@ -1,11 +1,12 @@
-// Written by JODA Dev
+// Copyright JODA Dev. All Rights Reserved. 
 
 #include "../header/file_manager.h"
 #include "../header/binary_encoding.h"
 
-/// @brief Attempts to open file, collect its contents and returns them to caller. If failed, returns empty string. 
-/// @param fName file name(string)
-/// @return Contents(string)
+/// @brief Attempts to open file by name, collect its contents(data) and returns them to caller. 
+/// @brief if failed, returns empty string. 
+/// @param fName file name to open(string)
+/// @return data from file(string)
 std::string FileManager::Read(std::string fName)
 {
     std::ifstream ifs;
@@ -21,12 +22,28 @@ std::string FileManager::Read(std::string fName)
             c = ifs.get();
         }
 
-        return contents;
-
         ifs.close();
+
+        return contents;
     }
     else
         Log::logError("Could not open file.. make sure you've enter the file name correctly and that the file is in the same directory as the .exe file!");
 
     return "";
 };
+
+/// @brief Write data to file
+/// @param fName file name to save as(string)
+/// @param data data to write(string)
+void FileManager::Write(std::string fName, std::string data)
+{
+    std::ofstream ofs;
+    ofs.open(fName+"_binary.txt");
+    if(ofs.is_open())
+    {
+        ofs << data;
+        ofs.close();
+    }
+    else
+        Log::logError("Something went wrong attempting to save the file!");
+}

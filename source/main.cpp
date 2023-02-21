@@ -1,4 +1,4 @@
-// Written by JODA Dev
+// Copyright JODA Dev. All Rights Reserved. 
 
 #include "../header/program.h"
 
