@@ -1,5 +1,8 @@
-Title: ReadBits
-Version: v1.0.1
-Author: JODA Dev
-License Type: MIT
-Year Published: 2023
+name: Read Bits
+short_name: rbits
+major: 1
+minor: 0
+patch: 2
+author: JODA Dev
+license: MIT
+year: 2023

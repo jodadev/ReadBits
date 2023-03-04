@@ -12,11 +12,11 @@ class Program
 public:
     enum STATE { UPDATE, EXIT };
     Program();
-    void run();
 private:
     STATE state;
-    std::string get_contents_from_file(std::string);
     void loop();
     void terminate();
     std::string ConvertToBinary(std::string);
+    void ConvertByFile();
+    void ConvertByString();
 };

@@ -11,6 +11,4 @@ public:
     static std::string get_string_input();
     static std::string get_string_input(std::string);
     static int get_int_input(std::string);
-private:
-    static void clear_buffer();
 };

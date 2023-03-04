@@ -1,75 +1,116 @@
 // Copyright JODA Dev. All Rights Reserved. 
-
 #include "../header/program.h"
 
 
-/// @brief Default constructor
+////////////////////////////
+// CONSTRUCTOR | INITIALIZER
+///////////////////////////
+
+/// @brief Default constructor. Initializes the program and begins its loop.
 Program::Program()
 {
-
-};
-
-
-/// @brief Initializes the program and begins its loop.
-void Program::run()
-{
+    // Update the state of the program
     state = Program::STATE::UPDATE;
-    std::cout << "ReadBits is a simple program which allows you to convert any text to binary code. You may do so by reading contents from a file or by entering text you wish to convert." << std::endl;
+    // Program notice message
+    Log::print("ReadBits is a simple program which allows you to convert any text to binary code. You may do so by reading contents from a file or by entering text you wish to convert.");
+    // Begin program's loop
     loop();
 };
 
+
+////////////////////////////
+// UPDATER
+///////////////////////////
 
 /// @brief The programs main loop. Runs as long as STATE is not equal to EXIT.
 void Program::loop()
 {
     int selection = -1;
-    std::string fileName ="";
-    std::string binaryCode = "";
-
+    
     while(state != Program::STATE::EXIT)
     {
-        selection = Input::get_int_input("\nChoose what you would like to do(number only)\n 1. Convert contents from file\n 2. Enter contents to convert\n 3. Terminate program\n\nEnter selection:");
+        // Display menu, wait for input, and store it.
+        selection = Input::get_int_input("\nChoose what you would like to do (Enter number only)\n 1. Convert contents from file\n 2. Enter contents to convert\n 3. Terminate program\n\nEnter selection:");
 
+        // Process input with a switch statement
         switch(selection)
         {
+        
+        // Menu option logic
         case 1:
-            fileName = Input::get_string_input("\nWhat file would you like to convert?");
-            
-            binaryCode = ConvertToBinary(get_contents_from_file(fileName));
-
-            if(binaryCode != "")
-            {
-                if(Input::get_boolean_input("\nSave to file?(y or n) - (no will just display binary code)"))
-                {
-                    FileManager::Write(fileName,binaryCode);
-                }
-                else
-                {
-                    std::cout << "Binary: " << binaryCode << std::endl;
-                }
-            }
-            
+            // Get file name as input and pass as argument 
+            ConvertByFile();
             break;
         case 2:
-            binaryCode = ConvertToBinary(Input::get_string_input("Enter what you would like to convert to binary:"));
-            
-            std::cout << "Binary: " <<  binaryCode << std::endl;
+            ConvertByString();
             break;
         case 3:
             terminate();
             return;
+        
+        // Handles invalid inputs(out of menu(integer selection) range)
         default:
-            std::cout << "Invalid input: terminating program.." << std::endl;
+            Log::logError("Invalid input - option "+std::to_string(selection)+" is not a valid option!");
             break;
         }
+    }
 
-        if(Input::get_boolean_input("\nTerminate program?(y or n)")) 
+}
+
+
+////////////////////////////
+// MENU OPTIONS
+///////////////////////////
+
+/// @brief Full logic to convert by file which gets file name as input, attempts to open file, retrieve contents and converts to binary
+/// @brief machine code. Option to save binary to file or to display it to the console.
+void Program::ConvertByFile()
+{
+    // Get file name input from user
+    std::string fileName = Input::get_string_input("\nWhat file would you like to convert?");
+
+    // Attempt to open and retrieve contents from file. Handle errors.
+    std::string contents = FileManager::Read(fileName);
+    if(contents.length() == 0)
+    {
+        Log::logError("The file returned no contents..");
+        return;
+    }
+    else if (contents == "Err")
+    {
+        return;
+    }
+
+    // Attempt to convert contents from file to binary 
+    std::string binaryCode = BinaryEncoding::ConvertToBinary(contents);
+
+    // Confirm binary conversion was successful or not
+    if(binaryCode.length() > 0)
+    {
+        // Ask user if they wish to save to file or display
+        if(Input::get_boolean_input("\nSave to file? (y or n) - (n = display binary code only)"))
         {
-            terminate();
+            FileManager::Write(fileName,binaryCode);
+        }
+        else
+        {
+            Log::print("Binary:\n"+binaryCode);
         }
     }
 }
 
+/// @brief Gets contents as input from user and converts to binary machine code.
+void Program::ConvertByString()
+{
+    // Attempt to convert contents to binary 
+    std::string binaryCode = BinaryEncoding::ConvertToBinary(Input::get_string_input("Enter what you would like to convert to binary:"));
+    
+    // Confirm binary conversion was successful or not
+    if(binaryCode.length() > 0)
+    {
+        Log::print("Binary:\n"+binaryCode);
+    }
+}
 
 /// @brief Terminates the program.
 void Program::terminate()
@@ -78,32 +119,11 @@ void Program::terminate()
 }
 
 
-/// @brief Opens file(if it exists), get all contents, and return the data.
-/// @param fileName File to open
-/// @return contents (string)  
-std::string Program::get_contents_from_file(std::string fileName)
-{
-    std::string contents = FileManager::Read(fileName);
-    if(contents.size() == 0)
-    {
-        Log::logError("There are no contents to convert..");
-        return "";
-    }
-    return contents;
-}
 
 
-/// @brief Retrieves file contents from specified file name and converts each character to binary machine code.
-/// @param fileName file to convert
-/// @return full binary code as string
-std::string Program::ConvertToBinary(std::string contents)
-{
-    std::string fullBinary = "";
-    for(char c : contents)
-    {
-        std::string binary = BinaryEncoding::get_binary(int(c));
-        if(binary == "") terminate();
-        fullBinary += binary;
-    }
-    return fullBinary;
-}
+
+
+
+
+
+

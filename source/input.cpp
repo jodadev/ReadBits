@@ -1,11 +1,10 @@
 // Copyright JODA Dev. All Rights Reserved. 
-
 #include "../header/input.h"
+#include "../header/log.h"
 
-void Input::clear_buffer()
-{
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-}
+////////////////////////////
+// METHODS
+///////////////////////////
 
 /// @brief Uses cin to obtain input from the user and saves it as a string.
 /// @brief Optionally, the user may pass a string as argument to display a 
@@ -14,10 +13,12 @@ void Input::clear_buffer()
 /// @return User input(string)
 std::string Input::get_string_input(std::string msg)
 {
-    std::cout << msg << std::endl;
+    Log::print(msg);
     std::string input;
-    std::cin >> input;
-    clear_buffer();
+
+    if ( std::cin.peek() == '\n' )
+		std::cin.ignore();
+    std::getline(std::cin,input);
     return input;
 }
 
@@ -25,9 +26,10 @@ std::string Input::get_string_input(std::string msg)
 /// @return User input(string)
 std::string Input::get_string_input()
 {
+    if ( std::cin.peek() == '\n' )
+		std::cin.ignore();
     std::string input;
-    std::cin >> input;
-    clear_buffer();
+    std::getline(std::cin,input);
     return input;
 }
 
@@ -42,7 +44,7 @@ bool Input::get_boolean_input(std::string msg, std::string trueVal, std::string 
 {
     while(true)
     {
-        std::cout << msg << std::endl;
+        Log::print(msg);
         std::string input = get_string_input();
 
         if(input == trueVal) 
@@ -61,9 +63,8 @@ bool Input::get_boolean_input(std::string msg, std::string trueVal, std::string 
 /// @return User input(integer)
 int Input::get_int_input(std::string msg)
 {
-    std::cout << msg << std::endl;
+    Log::print(msg);
     std::string input;
     std::cin >> input;
-    clear_buffer();
     return std::stoi(input);
 }
