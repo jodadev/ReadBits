@@ -1,6 +1,6 @@
 #pragma once
 #include "../header/file_manager.h"
-#include "../header/binary_encoding.h"
+#include "../header/binary_coder.h"
 #include "../header/log.h"
 #include "../header/input.h"
 #include <iostream>
@@ -10,13 +10,19 @@
 class Program
 {
 public:
-    enum STATE { UPDATE, EXIT };
+    enum STATE
+    {
+        UPDATE,
+        EXIT
+    };
     Program();
+
 private:
     STATE state;
     void loop();
     void terminate();
-    std::string ConvertToBinary(std::string);
-    void ConvertByFile();
-    void ConvertByString();
+    void Convert_By_File();
+    void Convert_By_String();
+    void Convert_From_Bytes_By_File();
+    void Convert_From_Bytes_By_String();
 };
